@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { ResponseHandler } from "../utils/responseHandler";
 import { WikiService } from "../services/wiki";
 import { RESPONSE_MSG_CODE } from "../utils/consts/reponse";
-import { WIKI_RESPONSE_MSG } from "../utils/responseMsg/responseMsg";
+import { WIKI_RESPONSE_MSG } from "../utils/consts/responseMsg";
 import logger from "../utils/logger";
 import cache from "../utils/cache";
 
