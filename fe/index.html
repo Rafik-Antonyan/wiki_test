@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wikipedia Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            secondary: '#64748b',
+            accent: '#0ea5e9',
+            background: '#f8fafc',
+            card: '#ffffff',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #2563eb;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-background min-h-screen">
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+          <i class="fas fa-chart-bar text-primary mr-3"></i>
+          Wikipedia Analytics
+        </h1>
+        <div class="flex space-x-4">
+          <button id="refreshBtn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <i class="fas fa-sync-alt mr-2"></i> Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0">Page View Statistics</h2>
+        <div class="flex flex-wrap gap-2">
+          <button data-period="30" class="period-btn px-4 py-2 bg-primary text-white rounded-md text-sm font-medium">Last 30 Days</button>
+          <button data-period="90" class="period-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium">Last 90 Days</button>
+          <button data-period="365" class="period-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium">Last 365 Days</button>
+        </div>
+      </div>
+      
+      <div class="relative">
+        <div id="chartContainer" class="w-full h-[400px]">
+          <canvas id="viewsChart"></canvas>
+        </div>
+        <div id="loadingIndicator" class="loading hidden">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">Total Views (Current)</h3>
+          <p id="totalCurrentViews" class="mt-1 text-2xl font-semibold text-gray-900">-</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">Total Views (Previous)</h3>
+          <p id="totalPreviousViews" class="mt-1 text-2xl font-semibold text-gray-900">-</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">Change</h3>
+          <p id="viewsChange" class="mt-1 text-2xl font-semibold">-</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">About This Service</h2>
+      <p class="text-gray-600">
+        This Wikipedia Analytics Mini Service displays page view statistics for Wikipedia articles over selected time periods.
+        The data is fetched from the Wikipedia API and cached for improved performance.
+      </p>
+      <div class="mt-4">
+        <h3 class="text-lg font-medium text-gray-800">Features:</h3>
+        <ul class="mt-2 list-disc list-inside text-gray-600">
+          <li>View statistics for the last 30, 90, or 365 days</li>
+          <li>Compare current period with previous period</li>
+          <li>Data is automatically grouped by day, week, or month depending on the selected period</li>
+          <li>Frontend caching of responses (1 hour)</li>
+          <li>Backend caching of Wikipedia API responses (2 hours)</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <p class="text-center text-gray-500 text-sm">
+        Wikipedia Analytics Mini Service &copy; 2025
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
